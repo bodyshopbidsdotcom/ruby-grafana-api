@@ -20,10 +20,16 @@ module Grafana
       return get_request(endpoint)
     end
 
-    def get_dashboard(name='')
+    def get_dashboard_by_name(name)
       name = self.create_slug(name)
       endpoint = "/api/dashboards/db/#{name}"
       @logger.info("Attempting to get dashboard (GET /api/dashboards/db/#{name})") if @debug
+      return get_request(endpoint)
+    end
+
+    def get_dashboard_by_uid(uid)
+      endpoint = "/api/dashboards/uid/#{uid}"
+      @logger.info("Attempting to get dashboard (GET /api/dashboards/uid/#{uid})") if @debug
       return get_request(endpoint)
     end
 
@@ -34,12 +40,22 @@ module Grafana
       return post_request(endpoint, dashboard)
     end
 
-    def delete_dashboard(name)
+    def delete_dashboard_by_name(name)
       name = self.create_slug(name)
       data = self.get_dashboard( name )
       id   = data['dashboard']['id'] ? data['dashboard']['id'] : nil
 
       endpoint = "/api/dashboards/db/#{name}"
+      @logger.info("Deleting dahsboard ID #{id} (DELETE #{endpoint})") if @debug
+      return delete_request(endpoint)
+    end
+
+    def delete_dashboard_by_uid(uid)
+      uid = self.create_slug(uid)
+      data = self.get_dashboard( uid )
+      id   = data['dashboard']['id'] ? data['dashboard']['id'] : nil
+
+      endpoint = "/api/dashboards/uid/#{uid}"
       @logger.info("Deleting dahsboard ID #{id} (DELETE #{endpoint})") if @debug
       return delete_request(endpoint)
     end
