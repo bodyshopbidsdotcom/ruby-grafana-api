@@ -70,7 +70,7 @@ module Grafana
       @logger = Logger.new(STDOUT)
       @headers = nil
 
-      if settings.has_key?('headers') && settings['headers'].key?('Authorization')
+      if settings.key?('headers') && settings['headers'].key?('Authorization')
         # API key Auth
         @headers = {
           :content_type => 'application/json; charset=UTF-8',
