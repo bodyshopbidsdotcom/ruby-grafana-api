@@ -28,7 +28,7 @@ module Grafana
     end
 
     def _issue_request(method_type='GET', endpoint='/', data={})
-  
+
       begin
         resp = nil
         case method_type.upcase
@@ -51,12 +51,12 @@ module Grafana
           return JSON.parse(resp.body)
         else
           @logger.error("#{__method__} on #{endpoint} failed: HTTP #{resp.code} - #{resp.body}") if @debug
-          return false
+          return resp
         end
 
       rescue => e
        @logger.error("Error: #{__method__} #{endpoint} error: #{e}") if @debug
-       return false
+       return resp
       end
 
     end
